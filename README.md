@@ -2,6 +2,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+## Test Update
+This is a test change to confirm GitHub Desktop works.
+
 First, run the development server:
 
 ```bash
