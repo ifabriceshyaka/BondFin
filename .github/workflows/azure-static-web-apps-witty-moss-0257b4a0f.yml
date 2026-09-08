@@ -27,7 +27,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WITTY_MOSS_0257B4A0F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "deploy"
+          action: "upload"
 
           ###### Repository/Build Configurations ######
           app_location: "/"
