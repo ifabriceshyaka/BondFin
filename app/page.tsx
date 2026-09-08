@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 
 export default function Home() {
   
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<Record<string, unknown>[]>([]);
 
   useEffect(() => {
     async function loadUsers() {
