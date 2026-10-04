@@ -15,8 +15,9 @@ BondFin is a simple, secure, private financial collective designed around a rota
 
 ## 2. Core ROSCA Model
 - Each member contributes $100 every two weeks
-- The group pools $1,000
-- One member receives the payout each cycle
+- Member contribution obligations total $1,000 per cycle
+- Members pay the cycle's recipient directly; the other nine members transfer $900 total, while the recipient retains their own $100 contribution
+- One member receives the direct payments each cycle
 - Rotation continues until all 10 members have received payout
 - The app tracks:
   - members

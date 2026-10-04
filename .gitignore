@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Word temp/lock files
+~$*
+~WRL*.tmp
+
+# Supabase CLI temp
+supabase/.temp/

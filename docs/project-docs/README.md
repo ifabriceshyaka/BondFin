@@ -10,6 +10,8 @@ This folder contains the working project documentation for BondFin Collective in
 - [04-master-instructions.md](04-master-instructions.md) — master implementation instructions and expectations
 - [05-architecture-notes.md](05-architecture-notes.md) — technical architecture decisions and boundaries
 - [06-rosca-model.md](06-rosca-model.md) — ROSCA rules and financial logic overview
+- [07-rosca-schema-security-report.md](07-rosca-schema-security-report.md) — implemented ROSCA schema, RLS model, and verification evidence
+- [08-dashboard-feature-documentation.md](08-dashboard-feature-documentation.md) — dashboard sections, data access, states, and security boundaries
 
 ## Purpose
 

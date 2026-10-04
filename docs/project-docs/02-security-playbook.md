@@ -34,8 +34,14 @@ These are already completed and must not be undone:
 - logout uses a server action
 - home page no longer exposes the Users table
 - /auth/me shows only safe fields
+- RLS is enabled on Contributions, PayoutSchedule, and Transactions
+- ROSCA ownership uses auth.users UUIDs rather than email columns
+- authenticated users can read only their own ROSCA records
+- no client insert, update, or delete policies exist for financial records
 - login/signup have validation and loading states
 - no shared hardcoded passwords
+- authenticated members may view names and profile pictures through the restricted MemberDirectory view
+- member emails and financial records remain private
 - npm run lint passes
 - npm run build passes
 
