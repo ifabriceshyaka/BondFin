@@ -1,6 +1,6 @@
-﻿# BondFin Cycle Workflow
+# BondFin Cycle Workflow
 
-> Source of truth: `docs/bondfin - Cycle workflow.mmd`. Keep this block in sync with it.
+> Generated from `docs/bondfin - Cycle workflow.mmd` by `npm run diagrams`. Do not edit by hand.
 
 ```mermaid
 flowchart TB
@@ -49,4 +49,3 @@ flowchart TB
     classDef gap stroke-dasharray: 5 5,stroke:#c0392b,color:#c0392b
     class Admin,I gap
 ```
-

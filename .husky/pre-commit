@@ -1,0 +1,3 @@
+if git diff --cached --name-only | grep -q "bondfin - Cycle workflow.mmd"; then
+  npm run diagrams && git add "docs/cycle-workflow.md" "docs/bondfin - Cycle workflow.png"
+fi
