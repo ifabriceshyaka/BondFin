@@ -1,0 +1,42 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.requireConfig": false,
+
+  "eslint.enable": true,
+  "eslint.format.enable": true,
+  "eslint.alwaysShowStatus": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  "tailwindCSS.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html",
+    "javascript": "html",
+    "javascriptreact": "html"
+  },
+  "tailwindCSS.emmetCompletions": true,
+
+  "gitlens.hovers.enabled": true,
+  "gitlens.currentLine.enabled": true,
+  "gitlens.codeLens.enabled": true,
+
+  "errorLens.enabled": true,
+  "errorLens.fontStyleItalic": false,
+  "errorLens.addNumberOfDiagnostics": true,
+
+  "github.copilot.enable": {
+    "*": true
+  },
+  "github.copilot.inlineSuggest.enable": true,
+
+  "workbench.iconTheme": "vscode-modern-icons",
+
+  "supabase.projectPath": "${workspaceFolder}",
+
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "files.autoSave": "onFocusChange",
+  "terminal.integrated.defaultProfile.windows": "PowerShell"
+}

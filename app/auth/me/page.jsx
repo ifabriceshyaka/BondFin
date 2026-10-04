@@ -18,7 +18,17 @@ export default function MePage() {
   useEffect(() => {
     async function getUser() {
       const { data } = await supabase.auth.getUser();
-      setUser(data.user);
+      const currentUser = data.user;
+      setUser(
+        currentUser
+          ? {
+              id: currentUser.id,
+              email: currentUser.email,
+              fullName: currentUser.user_metadata?.full_name ?? null,
+              emailConfirmedAt: currentUser.email_confirmed_at,
+            }
+          : null
+      );
     }
 
     getUser();

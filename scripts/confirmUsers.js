@@ -9,6 +9,12 @@ dotenv.config({ path: ".env.local" });
 
 import { createClient } from "@supabase/supabase-js";
 
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  throw new Error(
+    "NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required."
+  );
+}
+
 // MUST use service role key (admin privileges)
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -33,6 +39,7 @@ async function confirmAllUsers() {
   }
 
   console.log(`Found ${users.length} users. Confirming...\n`);
+  let failedUsers = 0;
 
   for (const user of users) {
     const { error: updateError } = await supabase.auth.admin.updateUserById(
@@ -41,6 +48,7 @@ async function confirmAllUsers() {
     );
 
     if (updateError) {
+      failedUsers += 1;
       console.log(`❌ Failed to confirm ${user.email}: ${updateError.message}`);
     } else {
       console.log(`✅ Confirmed: ${user.email}`);
@@ -48,6 +56,12 @@ async function confirmAllUsers() {
   }
 
   console.log("\n🎉 All users processed.");
+  if (failedUsers > 0) {
+    process.exitCode = 1;
+  }
 }
 
-confirmAllUsers();
+confirmAllUsers().catch((error) => {
+  console.error("❌ User confirmation failed:", error.message);
+  process.exitCode = 1;
+});

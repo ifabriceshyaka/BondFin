@@ -20,10 +20,17 @@
  */
 
 import dotenv from "dotenv";
+import { randomBytes } from "node:crypto";
 // Load environment variables from .env.local
 dotenv.config({ path: ".env.local" });
 
 import { createClient } from "@supabase/supabase-js";
+
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  throw new Error(
+    "NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required."
+  );
+}
 
 // Initialize Supabase client using the Service Role Key
 // This key allows admin-level operations such as creating users
@@ -55,23 +62,32 @@ const members = [
  */
 async function createAccounts() {
   console.log("🚀 Starting BondFin member creation...\n");
+  let failedAccounts = 0;
 
   for (const email of members) {
-    const { data, error } = await supabase.auth.admin.createUser({
+    const temporaryPassword = randomBytes(18).toString("base64url");
+    const { error } = await supabase.auth.admin.createUser({
       email,
-      password: "bondfin123",
+      password: temporaryPassword,
       email_confirm: true, // bypass confirmation email
     });
 
     if (error) {
+      failedAccounts += 1;
       console.log(`❌ Error creating ${email}: ${error.message}`);
     } else {
-      console.log(`✅ Created: ${email}`);
+      console.log(`✅ Created: ${email} | Temporary password: ${temporaryPassword}`);
     }
   }
 
   console.log("\n🎉 Member creation process completed.");
+  if (failedAccounts > 0) {
+    process.exitCode = 1;
+  }
 }
 
 // Execute the script
-createAccounts();
+createAccounts().catch((error) => {
+  console.error("❌ Member creation failed:", error.message);
+  process.exitCode = 1;
+});
