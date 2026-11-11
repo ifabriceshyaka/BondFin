@@ -12,10 +12,20 @@ export default async function MembersPage() {
     redirect("/auth/login");
   }
 
+  const { data: ownProfile } = await supabase
+    .from("Users")
+    .select("id")
+    .eq("email", user.email)
+    .maybeSingle();
+
   const { data: members, error } = await supabase
     .from("MemberDirectory")
     .select("id, full_name, profile_picture")
     .order("full_name", { ascending: true });
+
+  const visibleMembers = (members || []).filter(
+    (member) => !ownProfile || member.id !== ownProfile.id,
+  );
 
   if (error) {
     console.error("Member directory fetch error:", error);
@@ -23,7 +33,7 @@ export default async function MembersPage() {
   }
 
   const membersWithAvatars = await Promise.all(
-    members.map(async (member) => {
+    visibleMembers.map(async (member) => {
       if (!member.profile_picture) {
         return member;
       }
@@ -45,7 +55,7 @@ export default async function MembersPage() {
           The trusted circle behind the collective.
         </p>
 
-        {members.length > 0 ? (
+        {visibleMembers.length > 0 ? (
           <ul
             style={{
               display: "grid",

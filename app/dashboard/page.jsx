@@ -655,6 +655,13 @@ export default async function DashboardPage({ searchParams }) {
     redirect("/auth/login");
   }
 
+  const { data: signedInPublicProfile } = await supabase
+    .from("Users")
+    .select("id")
+    .eq("email", user.email)
+    .maybeSingle();
+  const ownPublicUserId = signedInPublicProfile?.id ?? null;
+
   const [cycleResult, membersResult] = await Promise.all([
     supabase
       .from("Cycles")
@@ -713,8 +720,7 @@ export default async function DashboardPage({ searchParams }) {
         .from("PayoutSchedule")
         .select("round_number, payout_date")
         .eq("recipient_user_id", user.id)
-        .eq("round_number", selectedCycle?.cycle_number ?? -1)
-        .maybeSingle(),
+        .order("payout_date", { ascending: true }),
       selectedCycle
         ? supabase
             .from("Transactions")
@@ -770,7 +776,14 @@ export default async function DashboardPage({ searchParams }) {
     console.error("Member directory fetch error:", membersResult.error);
 
   const contribution = contributionResult.data;
-  const payout = payoutResult.data;
+  const payoutRows = payoutResult.data || [];
+  const activeCycleNumber = cycles.find((cycle) => cycle.status === "active")?.cycle_number ?? null;
+  const payout =
+    selectedCycle
+      ? payoutRows.find((row) => row.round_number === selectedCycle.cycle_number) ?? null
+      : activeCycleNumber !== null
+        ? payoutRows.find((row) => row.round_number === activeCycleNumber) ?? null
+        : null;
   const transactions = transactionsResult.data || [];
   const recipientRows = recipientResult.data || [];
   const recipientScheduleIssue = recipientRows.length > 1;
@@ -790,7 +803,7 @@ export default async function DashboardPage({ searchParams }) {
     activeRecipientRows[0].round_number === selectedCycle?.cycle_number;
   const otherMembers = await Promise.all(
     (membersResult.data || [])
-      .filter((member) => member.id !== user.id)
+      .filter((member) => !ownPublicUserId || member.id !== ownPublicUserId)
       .slice(0, 4)
       .map(async (member, index) => {
         if (!member.profile_picture) {
@@ -814,13 +827,13 @@ export default async function DashboardPage({ searchParams }) {
         };
       }),
   );
-  const { data: ownProfile } = await supabase
+  const { data: ownProfileDetails } = await supabase
     .from("Users")
     .select("full_name")
     .eq("email", user.email)
     .maybeSingle();
   const displayName =
-    ownProfile?.full_name || user.user_metadata?.full_name || "Member";
+    ownProfileDetails?.full_name || user.user_metadata?.full_name || "Member";
   const initials =
     displayName
       .split(/\s+/)

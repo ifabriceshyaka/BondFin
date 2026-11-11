@@ -177,11 +177,9 @@ The page displays member names and profile pictures, with an initial-based fallb
 Remaining dashboard follow-ups should be handled one at a time after the relevant data is verified and the display decision is clear.
 
 - [x] Confirm `PayoutSchedule.round_number` maps to `Cycles.cycle_number`; expose only the active cycle recipient to members.
-- [ ] TODO: Check that the member list excludes the signed-in member.
-	- Verify how `MemberDirectory.id` maps to the Auth user ID. It comes from `Users.id`, which may differ from `auth.users.id`.
-	- Only then adjust the exclusion logic; the current comparison may include the signed-in member or show fewer peers than intended.
-- [ ] TODO: Decide which payout belongs on the dashboard.
-	- Check whether `PayoutSchedule` retains past payout rows.
-	- If it does, decide whether to show the next future payout or payout history before changing the query, which currently selects the earliest date overall.
+- [x] Check that the member list excludes the signed-in member.
+	- `MemberDirectory.id` maps through the public `Users` table, not `auth.users.id`. The signed-in member is resolved by matching the authenticated email to `Users.email`, then filtering that `Users.id` from the member directory.
+- [x] Decide which payout belongs on the dashboard.
+	- The dashboard now resolves the payout row for the selected cycle or active cycle instead of relying on an arbitrary earliest payout date. That keeps the display aligned with the cycle being viewed and avoids showing a stale historical payout row.
 
 Automated provider confirmation, reminders, countdowns, recipient payment details, and additional authorized reviewers remain follow-ups. A “sent” report alone never creates a confirmed contribution.
