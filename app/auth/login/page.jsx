@@ -7,17 +7,24 @@
 
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
-export default function LoginPage() {
+const callbackFailureMessage =
+  "This link is invalid or has expired. Please request a new password reset or contact the circle organizer.";
+
+export default function LoginPage({ searchParams }) {
+  const { error: callbackError } = use(searchParams);
+  const callbackFailed = callbackError === "auth_callback_failed";
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState(
+    callbackFailed ? callbackFailureMessage : "",
+  );
+  const [isError, setIsError] = useState(callbackFailed);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleLogin(event) {
@@ -96,6 +103,10 @@ export default function LoginPage() {
           <h1>BondFin Collective</h1>
           <div className="tagline-spacer" aria-hidden="true" />
           <p>Sign in to your account</p>
+          <p className="invite-only-note">
+            Invite-Only Circle — Membership is by invitation from the circle
+            organizer.
+          </p>
         </div>
         <form onSubmit={handleLogin} className="signup-form">
           <label htmlFor="login-email">Email address</label>
@@ -165,9 +176,6 @@ export default function LoginPage() {
             </span>
             Your information is encrypted and never shared.
           </small>
-          <p className="account-switch">
-            Need an account? <a href="/auth/signup">Sign up</a>
-          </p>
           <p
             role="status"
             aria-live="polite"
@@ -256,6 +264,15 @@ export default function LoginPage() {
         .signup-heading p {
           color: #4b5563;
           font-weight: 600;
+        }
+
+        .signup-heading .invite-only-note {
+          max-width: 340px;
+          margin-top: 4px;
+          color: #667085;
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 1.5;
         }
 
         .signup-heading {
