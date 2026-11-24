@@ -84,16 +84,16 @@ The current database constraint allows one contribution per member per cycle. Pa
 
 ### Your Payout Round
 
-Displays the signed-in member's earliest upcoming or available payout schedule row:
+Displays the signed-in member's payout schedule row for the Uruziga currently selected on the dashboard. By default, the dashboard selects the active Uruziga; selecting a historical Uruziga displays that round's payout instead.
 
 - Round number
 - Payout date
 
-If no payout schedule row exists, the dashboard displays `No payout scheduled yet.`
+If no payout schedule row exists for the selected Uruziga, the dashboard displays `Not scheduled`.
 
 ### Next Payout Date
 
-Displays the same member-specific payout date in a dedicated summary card. If no date exists, it displays `Not scheduled`.
+Displays the same selected-Uruziga payout date in a dedicated summary card. When browsing a historical Uruziga, this is that round's date, not necessarily the next future payout. If no date exists, it displays `Not scheduled`.
 
 The current implementation displays the authoritative server-provided date. It does not yet include a live client-side countdown.
 
@@ -172,14 +172,14 @@ Email addresses and financial records are not exposed by this directory. The und
 
 The page displays member names and profile pictures, with an initial-based fallback when no picture is available. It does not display contribution amounts, payout details, transaction history, or email addresses.
 
-## Deferred Dashboard Follow-ups
+## Verified Dashboard Decisions
 
-Remaining dashboard follow-ups should be handled one at a time after the relevant data is verified and the display decision is clear.
+The following data mappings and display behaviors are verified and reflected in the dashboard:
 
-- [x] Confirm `PayoutSchedule.round_number` maps to `Cycles.cycle_number`; expose only the active cycle recipient to members.
-- [x] Check that the member list excludes the signed-in member.
-	- `MemberDirectory.id` maps through the public `Users` table, not `auth.users.id`. The signed-in member is resolved by matching the authenticated email to `Users.email`, then filtering that `Users.id` from the member directory.
-- [x] Decide which payout belongs on the dashboard.
-	- The dashboard now resolves the payout row for the selected cycle or active cycle instead of relying on an arbitrary earliest payout date. That keeps the display aligned with the cycle being viewed and avoids showing a stale historical payout row.
+- **Cycle-to-payout mapping:** `PayoutSchedule.round_number` maps to `Cycles.cycle_number`. Members see only the active cycle's recipient.
+- **Member directory:** The signed-in member is excluded by matching the authenticated email to `Users.email`, then comparing `MemberDirectory.id` with the matching `Users.id`. These IDs may differ from `auth.users.id`.
+- **Member payout:** The dashboard shows the payout row for the selected Uruziga, defaulting to the active Uruziga. Selecting a historical Uruziga shows that round's payout rather than an arbitrary earliest payout date.
 
-Automated provider confirmation, reminders, countdowns, recipient payment details, and additional authorized reviewers remain follow-ups. A “sent” report alone never creates a confirmed contribution.
+## Remaining Follow-ups
+
+Automated provider confirmation, reminders, countdowns, recipient payment details, and additional authorized reviewers remain future work. A “sent” report alone never creates a confirmed contribution.

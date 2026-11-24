@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 export default async function MembersPage() {
   const supabase = await createClient();
@@ -68,11 +69,12 @@ export default async function MembersPage() {
             {membersWithAvatars.map((member) => (
               <li key={member.id} style={memberCardStyle}>
                 {member.profile_picture ? (
-                  <img
+                  <Image
                     src={member.profile_picture}
                     alt=""
-                    width="48"
-                    height="48"
+                    width={48}
+                    height={48}
+                    unoptimized
                     style={avatarStyle}
                   />
                 ) : (

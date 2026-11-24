@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 
 const allowedImageTypes = new Map([
   ["image/jpeg", "jpg"],
@@ -139,7 +140,7 @@ export default async function ProfilePage({ searchParams }) {
 
         {message && <p style={{ ...messageStyle, color: message.color }}>{message.text}</p>}
 
-        {avatarUrl && <img src={avatarUrl} alt="" width="96" height="96" style={profileAvatarStyle} />}
+        {avatarUrl && <Image src={avatarUrl} alt="" width={96} height={96} unoptimized style={profileAvatarStyle} />}
 
         <form action={updateProfile} style={formStyle}>
           <label htmlFor="full_name" style={labelStyle}>Full name</label>

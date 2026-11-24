@@ -13,6 +13,10 @@ This folder contains the working project documentation for BondFin Collective in
 - [07-rosca-schema-security-report.md](07-rosca-schema-security-report.md) — implemented ROSCA schema, RLS model, and verification evidence
 - [08-dashboard-feature-documentation.md](08-dashboard-feature-documentation.md) — dashboard sections, data access, states, and security boundaries
 
+## Source of Truth
+
+[`PROJECT_CONTEXT.md`](../../PROJECT_CONTEXT.md) in the repository root is the canonical, AI-facing context. If any file in this folder conflicts with it, `PROJECT_CONTEXT.md` wins and the other file should be corrected.
+
 ## Purpose
 
 These files are meant to keep the project definition, security model, and implementation rules in one organized location so AI agents stay aligned with the original BondFin scope.

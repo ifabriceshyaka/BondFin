@@ -5,8 +5,9 @@ BondFin Collective is a private rotating savings group (ROSCA) for 10 trusted me
 
 ## Purpose
 - Each member contributes $100 every two weeks
-- The group pools $1,000
-- One member receives the payout per cycle
+- Member contribution obligations total $1,000 per cycle
+- Members pay the cycle's recipient directly; the other nine members transfer $900 total, while the recipient retains their own $100 contribution
+- One member receives the direct payments each cycle
 - Rotation continues until all 10 members receive payout
 - The app tracks contributions, payout order, payout dates, cycle status, and financial transparency
 
